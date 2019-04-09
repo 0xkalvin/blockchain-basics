@@ -1,31 +1,4 @@
-import hashlib
-import json
-import jsonpickle
-import datetime
-
-class Block:
-    
-    def __init__(self, data, previous_hash = ""):
-        self.counter = 0
-        self.index = 0
-        self.timestamp = str(datetime.datetime.now())
-        self.data = data
-        self.previous_hash = previous_hash
-        self.hash = self.generate_hash()
-        
-    
-    def generate_hash(self):
-        var = str(self.index) + str(self.timestamp) + str(self.data) + str(self.previous_hash) + str(self.counter)
-        return hashlib.sha256(var.encode()).hexdigest()
-    
-    def mine_block(self, difficulty):
-        string = "0"*difficulty
-        while self.hash[:difficulty] != string:
-            self.counter += 1
-            self.hash = self.generate_hash()
-        
-        print("Block mined: " + self.hash)
-
+from block import Block
 
 class Blockchain:
 
@@ -62,12 +35,3 @@ class Blockchain:
     
 
 
-my_blockchain = Blockchain()
-print("mining block 1...")
-my_blockchain.add_block(Block("some data"))
-print("mining block 2...")
-my_blockchain.add_block(Block(":p"))
-
-x = jsonpickle.encode(my_blockchain)
-parsed = json.loads(x)
-print(json.dumps(parsed, indent=4, sort_keys=True))
